@@ -1,3 +1,8 @@
+<?
+
+session_start();
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,14 +90,20 @@
     $n = fread($fp,filesize("latogatok.txt"));
     fclose($fp);
 
-    $n++;
+    if(!isset($_SESSION['eg']))
+    {
+        $n++;
 
-    $fp = fopen("latogatok.txt", "w");//Felülírás
-    fwrite($fp, $n);
-    fclose($fp);
+        $fp = fopen("latogatok.txt", "w");//Felülírás
+        fwrite($fp, $n);
+        fclose($fp);
+
+        $_SESSION['eg'] = "kábel";
+    }
 
 
-    print("Te vagy a $n. látogató.")
+    print("Te vagy a $n. látogató.<br>");
+    print("SessionID: ".session_id());
 
     ?>
     </div>
