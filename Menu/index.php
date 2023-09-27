@@ -71,6 +71,30 @@
                 break;
         }
     ?>
+    <?
+
+    if(!file_exists("latogatok.txt"))//Ha nincs ilyen fájl
+    {
+        $fp = fopen("latogatok.txt", "w");//Fájl létrehozás
+        //Az fopen method egy resource-t ad vissza ami egy memóriában eltárolt(logikai) fájl.
+        fwrite($fp, "0");
+        fclose($fp);
+    }
+
+    $fp = fopen("latogatok.txt", "r");
+    $n = fread($fp,filesize("latogatok.txt"));
+    fclose($fp);
+
+    $n++;
+
+    $fp = fopen("latogatok.txt", "w");//Felülírás
+    fwrite($fp, $n);
+    fclose($fp);
+
+
+    print("Te vagy a $n. látogató.")
+
+    ?>
     </div>
 </body>
 </html>
