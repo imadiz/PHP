@@ -1,0 +1,6 @@
+/.htaccess
+/appserv
+/cgi-bin
+/index.php
+/phpinfo.php
+/phpMyAdmin

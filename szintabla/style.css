@@ -1,0 +1,17 @@
+#tabla{
+    margin: auto;
+    text-align: center;
+}
+#tabla td{
+    width: 5px;
+	height: 5px;
+    margin: 0px;
+    padding: 0px;
+}
+#display{
+    margin: auto;
+    text-align: center;
+}
+td span{
+    margin: auto;
+}
