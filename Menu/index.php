@@ -92,7 +92,7 @@ session_start();
                 break;
             case "karrier":
                 print("<h1>Karrier</h1>");
-                
+                include("szavazas.php");
                 break;
             case "forum":
                 print("<h1>Fórum</h1>");
