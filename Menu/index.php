@@ -58,53 +58,52 @@ session_start();
                 break;
             case "rolunk":
                 print("<h1>Rólunk</h1>");
+                $fajlnev = date("Ymd").".txt";
+
+                if(!file_exists($fajlnev))//Ha nincs ilyen fájl
+                {
+                    $fp = fopen($fajlnev, "w");//Fájl létrehozás
+                    //Az fopen method egy resource-t ad vissza ami egy memóriában eltárolt(logikai) fájl.
+                    fwrite($fp, "0");
+                    fclose($fp);
+                }
+            
+                $fp = fopen($fajlnev, "r");
+                $n = fread($fp,filesize($fajlnev));
+                fclose($fp);
+            
+                if(!isset($_SESSION['eg']))
+                {
+                    $n++;
+                
+                    $fp = fopen($fajlnev, "w");//Felülírás
+                    fwrite($fp, $n);
+                    fclose($fp);
+                
+                    $_SESSION['eg'] = "kábel";
+                }
+            
+            
+                print("Az oldalt eddig $n látogató látta.<br>");
+                print("SessionID: ".session_id());
                 break;
             case "termekek":
                 print("<h1>Termékeink</h1>");
                 break;
             case "karrier":
                 print("<h1>Karrier</h1>");
+                
                 break;
             case "forum":
                 print("<h1>Fórum</h1>");
                 break;
             case "kapcs":
-                include("elerhetoseg.php");
+                include("elerhetoseg.");
                 break;
             default:
                 print("<h1>404</h1>");
                 break;
         }
-    ?>
-    <?
-
-    if(!file_exists("latogatok.txt"))//Ha nincs ilyen fájl
-    {
-        $fp = fopen("latogatok.txt", "w");//Fájl létrehozás
-        //Az fopen method egy resource-t ad vissza ami egy memóriában eltárolt(logikai) fájl.
-        fwrite($fp, "0");
-        fclose($fp);
-    }
-
-    $fp = fopen("latogatok.txt", "r");
-    $n = fread($fp,filesize("latogatok.txt"));
-    fclose($fp);
-
-    if(!isset($_SESSION['eg']))
-    {
-        $n++;
-
-        $fp = fopen("latogatok.txt", "w");//Felülírás
-        fwrite($fp, $n);
-        fclose($fp);
-
-        $_SESSION['eg'] = "kábel";
-    }
-
-
-    print("Te vagy a $n. látogató.<br>");
-    print("SessionID: ".session_id());
-
     ?>
     </div>
 </body>
