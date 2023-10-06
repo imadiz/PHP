@@ -25,10 +25,22 @@ $orszagok = array("Spanyolország", "Görögország", "Törökország", "Örmén
         $allas = fread($fp, filesize("szavazasok.txt"));
         $db = explode(";", $allas);
         fclose($fp);
-        print "Szavazás állása:<br><br>
-               $orszagok[0] | ".$db[0]."<br>
-               $orszagok[1] | ".$db[1]."<br>
-               $orszagok[2] | ".$db[2]."<br>
-               $orszagok[3] | ".$db[3]."<br>";
+
+        $ossz = array_sum($db);
+        $szazalek = array($db[0]/$ossz*100, $db[1]/$ossz*100, $db[2]/$ossz*100, $db[3]/$ossz*100);
+        print "Szavazás állása:<br>
+            <style>
+                table#eredmeny tr td span{
+                    display: inline-block;
+                    height: 12px;
+                    background-color: #008;
+                }
+            </style>
+            <table id='eredmeny'>
+               <tr><td>$orszagok[0] <td> $db[0] <td> $szazalek[0] % <td> <span style='width:".($szazalek[0]*10)."px'></tr>
+               <tr><td>$orszagok[1] <td> $db[1] <td> $szazalek[1] % <td> <span style='width:".($szazalek[1]*10)."px'></tr>
+               <tr><td>$orszagok[2] <td> $db[2] <td> $szazalek[2] % <td> <span style='width:".($szazalek[2]*10)."px'></tr>
+               <tr><td>$orszagok[3] <td> $db[3] <td> $szazalek[3] % <td> <span style='width:".($szazalek[3]*10)."px'></tr>
+            </table>";
     }
 ?>
