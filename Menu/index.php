@@ -57,8 +57,28 @@ session_start();
                 print("<h1>Akciók, aktualitások</h1>");
                 break;
             case "rolunk":
-                print("<h1>Rólunk</h1>");
-                $fajlnev = date("Ymd").".txt";
+                print("<h1>Rólunk</h1>");            
+                print("Az oldalt eddig $n látogató látta.<br>");
+                print("SessionID: ".session_id());
+                break;
+            case "termekek":
+                print("<h1>Termékeink</h1>");
+                break;
+            case "karrier":
+                print("<h1>Karrier</h1>");
+                include("szavazas.php");
+                break;
+            case "forum":
+                print("<h1>Fórum</h1>");
+                break;
+            case "kapcs":
+                include("elerhetoseg.");
+                break;
+            default:
+                print("<h1>404</h1>");
+                break;
+        }
+        $fajlnev = date("Ymd").".txt";
 
                 if(!file_exists($fajlnev))//Ha nincs ilyen fájl
                 {
@@ -82,28 +102,6 @@ session_start();
                 
                     $_SESSION['eg'] = "kábel";
                 }
-            
-            
-                print("Az oldalt eddig $n látogató látta.<br>");
-                print("SessionID: ".session_id());
-                break;
-            case "termekek":
-                print("<h1>Termékeink</h1>");
-                break;
-            case "karrier":
-                print("<h1>Karrier</h1>");
-                include("szavazas.php");
-                break;
-            case "forum":
-                print("<h1>Fórum</h1>");
-                break;
-            case "kapcs":
-                include("elerhetoseg.");
-                break;
-            default:
-                print("<h1>404</h1>");
-                break;
-        }
     ?>
     </div>
 </body>
