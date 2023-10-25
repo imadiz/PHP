@@ -33,6 +33,9 @@ session_start();
             case "kapcs":
                 print("Vedd fel a kapcsolatot az ügyfélszolgálatunkkal!");
                 break;
+            case "vendeg":
+                print("Szólj hozzá az oldalhoz!");
+                break;
             default:
                 print("404 - Nincs iyen oldal");
                 break;
@@ -47,7 +50,8 @@ session_start();
         <a href="./?p=termekek">Termékeink</a> |
         <a href="./?p=karrier">Karrier</a> |
         <a href="./?p=forum">Fórum</a> |
-        <a href="./?p=kapcs">Kapcsolat</a>]
+        <a href="./?p=kapcs">Kapcsolat</a> |
+        <a href="./?p=vendeg">Vendégkönyv</a> ]
     </div>
     <div id='tartalom'>
     <?
@@ -73,6 +77,9 @@ session_start();
                 break;
             case "kapcs":
                 include("elerhetoseg.");
+                break;
+            case "vendeg":
+                include("vendegkonyv.php");
                 break;
             default:
                 print("<h1>404</h1>");
