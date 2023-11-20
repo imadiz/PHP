@@ -1,27 +1,34 @@
 <?
-    if(!isset($_POST['comment_name']))
+    date_default_timezone_set("Europe/Budapest");
+    session_start();
+
+    if($_POST['comment_name'] == '')//Ha nincs név
         die("<script>alert('Nem írtál be nevet!')</script>");
 
-    if(!isset($_POST['comment_text']))
-    die("<script>alert('Nem írtál szöveget!')</script>");
-    
-    $clearname = str_replace("\r\n", "", nl2br(str_replace(";", ",", $_POST['comment_name'])));
+    if($_POST['comment_text'] == '')//Ha nincs szöveg
+        die("<script>alert('Nem írtál szöveget!')</script>");
 
-    $clearcomment = str_replace("\r\n", "", nl2br(str_replace(";", ",", $_POST['comment_text'])));
+    if($_SESSION['cc'] != $_POST['Captcha'])
+        die("alert('Nem jól számoltál!')".$_SESSION['cc']."*".$_POST['Captcha']);
+
+    $csatolmany = $_FILES["comment_file"];//Csatolmány elmentése
+    $fajlnev = $csatolmany["name"];//Fájl neve
+    $kiterj = substr($fajlnev, strrpos($fajlnev, '.'));//Kiterjesztés
+    $ujnev = date("YmdHis").$kiterj;//Egyedi név
+
+    move_uploaded_file($csatolmany['tmp_name'], "./files/$ujnev");//Feltöltött fájl áthelyezése
+    
+    $clearname = str_replace("\r\n", "", nl2br(str_replace(";", ",", $_POST['comment_name'])));//Komment név formázása
+
+    $clearcomment = str_replace("\r\n", "", nl2br(str_replace(";", ",", $_POST['comment_text'])));//Komment szöveg formázása
 
     file_put_contents("all_comments.txt",
-                        date("Y.m.d H:i:s").";$clearname;$clearcomment",
-                        FILE_APPEND);
+                        date("Y.m.d H:i:s").";$clearname;$clearcomment;$fajlnev;$ujnev\r\n",
+                        FILE_APPEND);//Komment elmentése
 
-    $file_comments = explode("\r\n", file_get_contents("all_comments.txt", false));
-
-    foreach($file_comments as $oneline)
-    {
-        $one_comment = explode(";", $oneline);
-        print("<div id='one_comment'>
-                   <h4 id='Comment_Header'>".$one_comment[1]." | ".$one_comment[0]."</h4>
-                   <p id='Comment_Text'>".$one_comment[2]."</p>
-                   <hr>
-               </div>");
-    }
+    $mailszoveg = "Kedves Admin, új komment érkezett a weboldaladra.\r\nÜdv,\r\nAdmin";
+    mail("admin@uzenofal.hu", "Új bejegyzés", $mailszoveg, "From:admin@uzenofal.hu");
 ?>
+<script>
+    parent.location.href = parent.location.href
+</script>
