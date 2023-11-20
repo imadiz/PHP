@@ -1,11 +1,11 @@
 <style>
     div#szamoltadatok{
-        display: inline-block;
-        margin: auto;
+        float: left;
         border: solid 1px #AAA;
     }
     table{
         float: left;
+        margin-right: 25px;
     }
     td{
         padding: 5px;
@@ -20,10 +20,6 @@
 </style>
 <?
     $adb = mysqli_connect("localhost", "root", "password", "userlogin");
-
-    print("<div id='szamoltadatok'>");
-    print("<span>Extra adatok:</span>");
-    print("</div>");
 
     $tabla = mysqli_query($adb, "SELECT * FROM user");
 
@@ -58,5 +54,9 @@ print("<tr>
         print("</td>
         </tr>\n");
     }
-    print("</table>");
+    print("</table>\n");
+
+    print("<div id='szamoltadatok'>\n");
+    print("\t<h2>Extra adatok</h2>\n");
+    print("</div>");
 ?>
