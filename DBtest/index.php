@@ -46,13 +46,6 @@
 
         $kontinensek = ["Európa", "Amerika", "Ázsia", "Óceánia", "Afrika", "Antarktisz"];
 
-        print("<div id='kontinens'>");
-        
-        while($kontinensek)
-
-        print("</div>");
-
-
         $tabla = mysqli_query($adb, "SELECT *
                                      FROM orszagok");
 
