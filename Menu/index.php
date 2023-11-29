@@ -14,7 +14,7 @@ session_start();
     <title>
     <?
         isset($_GET['p']) ? $p = $_GET['p']: $p = "";
-        switch($p){
+        switch($p){//A oldalcímke címe
             case "":
                 print("Egyszer használatos kuponkód az egyik menüpontban!");
                 break;
@@ -36,6 +36,9 @@ session_start();
             case "vendeg":
                 print("Szólj hozzá az oldalhoz!");
                 break;
+            case "login":
+                print("Belépés");
+                break;
             default:
                 print("404 - Nincs iyen oldal");
                 break;
@@ -51,12 +54,13 @@ session_start();
         <a href="./?p=karrier">Karrier</a> |
         <a href="./?p=forum">Fórum</a> |
         <a href="./?p=kapcs">Kapcsolat</a> |
-        <a href="./?p=vendeg">Vendégkönyv</a> ]
+        <a href="./?p=vendeg">Vendégkönyv</a> |
+        <a href="./?p=login">Belépés</a> ]
     </div>
     <div id='tartalom'>
     <?
     isset($_GET['p']) ? $p = $_GET['p']: $p = null;
-        switch($p){
+        switch($p){//Actual oldalak
             case "":
                 print("<h1>Akciók, aktualitások</h1>");
                 break;
@@ -81,34 +85,40 @@ session_start();
             case "vendeg":
                 include("vendegkonyv.php");
                 break;
+            case "login":
+                include("login.php");
+                break;
+            case "reg":
+                include("reg.php");
+                break;
             default:
                 print("<h1>404</h1>");
                 break;
         }
         $fajlnev = date("Ymd").".txt";
 
-                if(!file_exists($fajlnev))//Ha nincs ilyen fájl
-                {
-                    $fp = fopen($fajlnev, "w");//Fájl létrehozás
-                    //Az fopen method egy resource-t ad vissza ami egy memóriában eltárolt(logikai) fájl.
-                    fwrite($fp, "0");
-                    fclose($fp);
-                }
-            
-                $fp = fopen($fajlnev, "r");
-                $n = fread($fp,filesize($fajlnev));
-                fclose($fp);
-            
-                if(!isset($_SESSION['eg']))
-                {
-                    $n++;
-                
-                    $fp = fopen($fajlnev, "w");//Felülírás
-                    fwrite($fp, $n);
-                    fclose($fp);
-                
-                    $_SESSION['eg'] = "kábel";
-                }
+        if(!file_exists("./logins/$fajlnev"))//Ha nincs ilyen fájl
+        {
+            $fp = fopen("./logins/$fajlnev", "w");//Fájl létrehozás
+            //Az fopen method egy resource-t ad vissza ami egy memóriában eltárolt(logikai) fájl.
+            fwrite($fp, "0");
+            fclose($fp);
+        }
+    
+        $fp = fopen("./logins/$fajlnev", "r");
+        $n = fread($fp,filesize("./logins/$fajlnev"));
+        fclose($fp);
+    
+        if(!isset($_SESSION['eg']))
+        {
+            $n++;
+        
+            $fp = fopen($fajlnev, "w");//Felülírás
+            fwrite($fp, $n);
+            fclose($fp);
+        
+            $_SESSION['eg'] = "kábel";
+        }
     ?>
     </div>
 </body>
