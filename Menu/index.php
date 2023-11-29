@@ -39,6 +39,9 @@ session_start();
             case "login":
                 print("Belépés");
                 break;
+            case "reg":
+                print("Regisztráció");
+                break;
             default:
                 print("404 - Nincs iyen oldal");
                 break;
@@ -121,5 +124,6 @@ session_start();
         }
     ?>
     </div>
+    <iframe name='kisablak' xwidth='0' xheight='0' xframeborder='0'></iframe>
 </body>
 </html>

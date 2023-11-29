@@ -17,8 +17,7 @@ $orszagok = array("Spanyolország", "Görögország", "Törökország", "Örmén
                    <input type='radio' name='szavazas' value='3'>$orszagok[2]<br>
                    <input type='radio' name='szavazas' value='4'>$orszagok[3]<br>
                    <input type='submit' value='Szavazok'>
-               </form>
-               <iframe name='kisablak'></iframe>");
+               </form>");
     }
     else{
         $fp = fopen("szavazasok.txt", "r");

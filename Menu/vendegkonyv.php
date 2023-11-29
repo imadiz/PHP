@@ -31,7 +31,7 @@
     $_SESSION['cc'] = 10 + $ca + $cb;
 ?>
 
-<form action='vendegkonyv_ir.php' method='post' id='write_comment' target='comment_list' enctype="multipart/form-data">
+<form action='vendegkonyv_ir.php' method='post' id='write_comment' target='kisablak' enctype="multipart/form-data">
     <p>Név:</p> <input type='text' id='nev' name='comment_name'>
     <br>
     <p>Szöveg</p> 
@@ -44,7 +44,6 @@
     <button type='submit' id="submit">Beküldés</button>
 </form>
 
-<iframe name='comment_list' id='comment_list'></iframe>
 <?//Az oldal betöltésekor kiírás
     $file_comments = explode("\r\n", file_get_contents("all_comments.txt", false));
     $file_comments = array_reverse($file_comments);
