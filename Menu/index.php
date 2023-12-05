@@ -1,6 +1,9 @@
 <?
-
 session_start();
+if(isset($_SESSION['uid'])) 
+            $belepve = 1;
+        else
+            $belepve = 0;
 
 ?>
 <!DOCTYPE html>
@@ -50,16 +53,33 @@ session_start();
     </title>
 </head>
 <body>
-    <div id="menu">
-        [<a href="./">Kezdőoldal</a> ||
-        <a href="./?p=rolunk">Rólunk</a> |
-        <a href="./?p=termekek">Termékeink</a> |
-        <a href="./?p=karrier">Karrier</a> |
-        <a href="./?p=forum">Fórum</a> |
-        <a href="./?p=kapcs">Kapcsolat</a> |
-        <a href="./?p=vendeg">Vendégkönyv</a> |
-        <a href="./?p=login">Belépés</a> ]
-    </div>
+    <?
+        if (!$belepve)
+        {
+            print('<div id="menu">
+                    [<a href="./">Kezdőoldal</a> ||
+                    <a href="./?p=rolunk">Rólunk</a> |
+                    <a href="./?p=termekek">Termékeink</a> |
+                    <a href="./?p=karrier">Karrier</a> |
+                    <a href="./?p=forum">Fórum</a> |
+                    <a href="./?p=kapcs">Kapcsolat</a> |
+                    <a href="./?p=vendeg">Vendégkönyv</a> |
+                    <a href="./?p=login">Belépés</a> ]
+                </div>');
+        }
+        else
+        {
+            print('<div id="menu">
+                    [<a href="./">Kezdőoldal</a> ||
+                    <a href="./?p=rolunk">Rólunk</a> |
+                    <a href="./?p=termekek">Termékeink</a> |
+                    <a href="./?p=karrier">Karrier</a> |
+                    <a href="./?p=forum">Fórum</a> |
+                    <a href="./?p=kapcs">Kapcsolat</a> |
+                    <a href="./?p=logout">Kilépés</a> ]
+                </div>');
+        }
+    ?>
     <div id='tartalom'>
     <?
     isset($_GET['p']) ? $p = $_GET['p']: $p = null;
@@ -69,7 +89,6 @@ session_start();
                 break;
             case "rolunk":
                 print("<h1>Rólunk</h1>");            
-                print("Az oldalt eddig $n látogató látta.<br>");
                 print("SessionID: ".session_id());
                 break;
             case "termekek":
@@ -83,7 +102,7 @@ session_start();
                 print("<h1>Fórum</h1>");
                 break;
             case "kapcs":
-                include("elerhetoseg.");
+                include("elerhetoseg.php");
                 break;
             case "vendeg":
                 include("vendegkonyv.php");
@@ -93,6 +112,9 @@ session_start();
                 break;
             case "reg":
                 include("reg.php");
+                break;
+            case "logout":
+                include("logout.php");
                 break;
             default:
                 print("<h1>404</h1>");
@@ -122,6 +144,8 @@ session_start();
         
             $_SESSION['eg'] = "kábel";
         }
+
+        print("<br>Az oldalt eddig $n látogató látta.<br>");
     ?>
     </div>
     <iframe name='kisablak' xwidth='0' xheight='0' xframeborder='0'></iframe>

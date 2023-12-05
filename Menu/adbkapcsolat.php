@@ -3,9 +3,10 @@
 
     function randomstring($h=10)
     {
+		$s = "";
         for ($i=0; $i <= $h; $i++)
         {
-            $s.= chr(rand(0, 255));
+            $s.= chr(rand(32, 126));
         }
         return $s;
     };
