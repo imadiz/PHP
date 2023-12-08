@@ -1,6 +1,5 @@
 <?
     session_start();
-
     include("adbkapcsolat.php");
     
     unset($_SESSION['uid']);
@@ -12,5 +11,4 @@
     print("<script>parent.location.href = './'</script>");
 
     mysqli_close($adb);
-
 ?>

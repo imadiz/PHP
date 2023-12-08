@@ -1,9 +1,20 @@
 <?
 session_start();
-if(isset($_SESSION['uid'])) 
-            $belepve = 1;
-        else
-            $belepve = 0;
+include("adbkapcsolat.php");
+if(isset($_SESSION['uid']))
+{
+    $belepve = 1;
+    mysqli_query($adb, "INSERT INTO naplo (NURL, NDatum, NIP, NLID)
+                                VALUES('$_SERVER[REQUEST_URI]', NOW(), '$_SERVER[REMOTE_ADDR]', '$_SESSION[lid]')");
+}
+else
+{
+    $belepve = 0;
+    mysqli_query($adb, "INSERT INTO naplo (NURL, NDatum, NIP, NLID)
+                                VALUES('$_SERVER[REQUEST_URI]', NOW(), '$_SERVER[REMOTE_ADDR]', -1)");
+}
+
+mysqli_close($adb);
 
 ?>
 <!DOCTYPE html>
@@ -22,7 +33,7 @@ if(isset($_SESSION['uid']))
                 print("Egyszer használatos kuponkód az egyik menüpontban!");
                 break;
             case "rolunk":
-                print("");
+                print("Rólunk!");
                 break;
             case "termekek":
                 print("Böngéssz termékeink között!");
@@ -45,6 +56,9 @@ if(isset($_SESSION['uid']))
             case "reg":
                 print("Regisztráció");
                 break;
+            case "profil":
+                print("Hello, ".$_SESSION["unev"]."!");
+                break;
             default:
                 print("404 - Nincs iyen oldal");
                 break;
@@ -63,21 +77,22 @@ if(isset($_SESSION['uid']))
                     <a href="./?p=karrier">Karrier</a> |
                     <a href="./?p=forum">Fórum</a> |
                     <a href="./?p=kapcs">Kapcsolat</a> |
-                    <a href="./?p=vendeg">Vendégkönyv</a> |
                     <a href="./?p=login">Belépés</a> ]
                 </div>');
         }
         else
         {
-            print('<div id="menu">
-                    [<a href="./">Kezdőoldal</a> ||
-                    <a href="./?p=rolunk">Rólunk</a> |
-                    <a href="./?p=termekek">Termékeink</a> |
-                    <a href="./?p=karrier">Karrier</a> |
-                    <a href="./?p=forum">Fórum</a> |
-                    <a href="./?p=kapcs">Kapcsolat</a> |
-                    <a href="./?p=logout">Kilépés</a> ]
-                </div>');
+            print("<div id='menu'>
+                    [<a href='./'>Kezdőoldal</a> ||
+                    <a href='./?p=rolunk'>Rólunk</a> |
+                    <a href='./?p=termekek'>Termékeink</a> |
+                    <a href='./?p=karrier'>Karrier</a> |
+                    <a href='./?p=forum'>Fórum</a> |
+                    <a href='./?p=kapcs'>Kapcsolat</a> |
+                    <a href='./?p=vendeg'>Vendégkönyv</a> ]
+                    <img source=''>
+                    <a href='./?p=profil' style='float: right;'>".$_SESSION["unev"]."</a>
+                </div>");
         }
     ?>
     <div id='tartalom'>
@@ -86,6 +101,14 @@ if(isset($_SESSION['uid']))
         switch($p){//Actual oldalak
             case "":
                 print("<h1>Akciók, aktualitások</h1>");
+                if($belepve)
+                {
+                    print("<span></span>");
+                }
+                else
+                {
+
+                }
                 break;
             case "rolunk":
                 print("<h1>Rólunk</h1>");            
@@ -112,6 +135,9 @@ if(isset($_SESSION['uid']))
                 break;
             case "reg":
                 include("reg.php");
+                break;
+            case "profil":
+                include("profil.php");
                 break;
             case "logout":
                 include("logout.php");
