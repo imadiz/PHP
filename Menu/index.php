@@ -13,9 +13,6 @@ else
     mysqli_query($adb, "INSERT INTO naplo (NURL, NDatum, NIP, NLID)
                                 VALUES('$_SERVER[REQUEST_URI]', NOW(), '$_SERVER[REMOTE_ADDR]', -1)");
 }
-
-mysqli_close($adb);
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -142,6 +139,9 @@ mysqli_close($adb);
             case "logout":
                 include("logout.php");
                 break;
+            case "adatmod":
+                include("adatmod.php");
+                break;
             default:
                 print("<h1>404</h1>");
                 break;
@@ -172,6 +172,7 @@ mysqli_close($adb);
         }
 
         print("<br>Az oldalt eddig $n látogató látta.<br>");
+        mysqli_close($adb);
     ?>
     </div>
     <iframe name='kisablak' xwidth='0' xheight='0' xframeborder='0'></iframe>
