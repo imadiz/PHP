@@ -56,6 +56,12 @@ else
             case "profil":
                 print("Hello, ".$_SESSION["unev"]."!");
                 break;
+            case "adatmod":
+                print("Adatmódosítás");
+                break;
+            case "kepmod":
+                print("Profilképmódosítás");
+                break;
             default:
                 print("404 - Nincs iyen oldal");
                 break;
@@ -136,11 +142,14 @@ else
             case "profil":
                 include("profil.php");
                 break;
-            case "logout":
-                include("logout.php");
-                break;
             case "adatmod":
                 include("adatmod.php");
+                break;
+            case "kepmod":
+                include("profilkep.php");
+                break;
+            case "logout":
+                include("logout.php");
                 break;
             default:
                 print("<h1>404</h1>");

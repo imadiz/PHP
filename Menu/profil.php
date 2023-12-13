@@ -14,7 +14,7 @@
     }
 </style>
 
-<h1>Profil adatok</h1>
+<h1>Profil</h1>
 <div id="adatok">
     <ul>
         <li><a href="./?p=adatmod">Adatok módosítása</a></li>

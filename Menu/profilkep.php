@@ -6,7 +6,7 @@
         margin: 10px 10px;
     }
     #adatok{
-        display: block;
+        display: inline-block;
         background-color: #DDD;
         border: 1px solid;
         border-radius: 15px;
@@ -39,15 +39,14 @@ $user = mysqli_fetch_array(mysqli_query($adb, "SELECT * FROM user
 
 ?>
 <h1 class="cim">Profil</h1>
-<h2 class="alcim">Adatmódosítás</h2>
+<h2 class="alcim">Profilképmódosítás</h2>
 <hr>
 <div id="adatok">
     <h2 class="nev"><?=$user['unev']?></h2>
-    <form action="adatmod_ir.php" method="post">
-        <input type="text" name="unev" placeholder='Felhasználónév' value='<?=$user['unev']?>'><br>
-        <input type="text" name="umail" placeholder='E-mail cím' value='<?=$user['umail']?>'><br>
+    <form action="profilkep_ir.php" method="post" enctype="multipart/form-data" target="kisablak">
+        <input type="file" name="ukep"><br>
         <input type="password" name="upw" placeholder="Jelszó az ellenőrzéshez"><br>
         <input type="hidden" name="strid" value='$user[ustrid]'>
-        <input type="submit" value='Adatmódosítás'>
+        <input type="submit" value='Képmódosítás'>
     </form>
 </div>

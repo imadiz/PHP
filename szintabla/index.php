@@ -43,8 +43,6 @@
     }
 
     function advance_color(){
-        
-        
         global $steps;
         global $color_step;
 
