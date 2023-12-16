@@ -46,7 +46,8 @@ $user = mysqli_fetch_array(mysqli_query($adb, "SELECT * FROM user
     <form action="profilkep_ir.php" method="post" enctype="multipart/form-data" target="kisablak">
         <input type="file" name="ukep"><br>
         <input type="password" name="upw" placeholder="Jelszó az ellenőrzéshez"><br>
-        <input type="hidden" name="strid" value='$user[ustrid]'>
+        <input type="hidden" name="ustrid" value="<?=$user['ustrid']?>">
         <input type="submit" value='Képmódosítás'>
     </form>
+    <img src="<?=$_SESSION["ukep"]?>">
 </div>

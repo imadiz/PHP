@@ -1,33 +1,32 @@
 <?
-
     session_start();
-    print_r($_FILES);
-
-    if($_POST['unev'] == "") { die("<script>alert('Nem írtál be felhasználónevet!')</script>"); }
-
-    if($_POST['umail'] == "") { die("<script>alert('Nem írtál be e-mailt!')</script>"); }
-
-    print("$_POST[unev] | $_POST[umail]");
 
     include("adbkapcsolat.php");
 
-    if(mysqli_num_rows(mysqli_query($adb, "SELECT unev FROM user WHERE BINARY unev = '$_POST[unev]'")))
-        die("<script>alert('Ez a felhasználónév már foglalt!')</script>");
+    print_r($_FILES);
 
-    if(mysqli_num_rows(mysqli_query($adb, "SELECT umail FROM user WHERE umail = '$_POST[umail]'")))
-        die("<script>alert('Ezzel az e-mail címmel már regisztráltál!')</script>");
+    if ($_FILES['ukep']['name'] == "")
+        die("<script>alert('Nem töltöttél fel képet!')</script>");
 
-    $user = mysqli_fetch_array(mysqli_query($adb, "SELECT upw FROM user WHERE ustrid='$_POST[ustrid]'"));
+    $fajlnev = $_FILES['ukep']['name'];
+
+    $kepnev = date("YmdHis") ."_". $_POST['ustrid']."_". randomstring(10).substr($fajlnev, strrpos($fajlnev, '.'));
+
+    $user = mysqli_fetch_array(mysqli_query($adb, "SELECT * FROM user WHERE ustrid='$_POST[ustrid]'"));
 
     if (md5($_POST['upw']) != $user['upw'])
         die("<script>alert('Hibás jelszó!')</script>");
 
-    mysqli_query($adb, "UPDATE user SET unev = '$_SESSION[unev]', umail = '$_SESSION[umail]'
-                        WHERE ustrid LIKE '$_POST[strid]'");
-    
-    mysqli_close($adb);
+    move_uploaded_file($_FILES['ukep']['tmp_name'], "./profilkep/$kepnev");
 
-    print("<script>
-                parent.location.href = './?p=profil'
-           </script>")
+    $_SESSION['ukep'] = "./profilkep/$kepnev";
+
+    mysqli_query($adb, "UPDATE user SET uprofilkep = '$kepnev'
+                        WHERE ustrid = '$_POST[ustrid]'");
+
+    print("<script>alert('Sikeres képmódosítás!')</script>");
+
+    print("<script>parent.location.href = parent.location.href</script>");
+
+    mysqli_close($adb);
 ?>

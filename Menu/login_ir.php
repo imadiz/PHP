@@ -23,6 +23,7 @@
         $_SESSION['umail'] = $sor['umail'];
         $_SESSION['upw'] = $sor['upw'];
         $_SESSION['ujog'] = $sor['ujog'];
+        $_SESSION['ukep'] = $sor['uprofilkep'];
 
         mysqli_query($adb, "INSERT INTO login(LUID, LDatum, LIP)
                         VALUES('$_SESSION[uid]', NOW(), '$_SERVER[REMOTE_ADDR]')");//Beírás a login táblába

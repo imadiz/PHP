@@ -93,7 +93,7 @@ else
                     <a href='./?p=forum'>Fórum</a> |
                     <a href='./?p=kapcs'>Kapcsolat</a> |
                     <a href='./?p=vendeg'>Vendégkönyv</a> ]
-                    <img source=''>
+                    <img source='".$_SESSION["ukep"]."'>
                     <a href='./?p=profil' style='float: right;'>".$_SESSION["unev"]."</a>
                 </div>");
         }
