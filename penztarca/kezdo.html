@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Pénztárca</title>
+    <style>
+        input[type=submit]{
+            margin-top: 1%;
+        }
+    </style>
+</head>
+<body>
+    <form action='login.php' method='post' target='kisablak'>
+        <h3>Felhasználónév</h3>
+        <input type='text' name='uname'>
+        <h3>Jelszó</h3>
+        <input type='password' name='upw'>
+        <br>
+        <input type='submit' value='Bejelentkezés'>
+    </form>
+    <a href='./?p=regisztracio'>A regisztrációhoz kattints ide!</a>
+    <iframe name='kisablak' frameborder='0'></iframe>
+</body>
+</html>

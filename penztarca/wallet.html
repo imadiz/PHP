@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A te pénztárcád!</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function createtable() {
+        var xmlhttp = new XMLHttpRequest();//Új request
+            /*Ez az event akkor fut le ha, a 'readyState' tulajdonság megváltozik.(Ha van/nincs kész válasz.)
+            A 4-es state azt jelenti hogy a call elment és a válasz kész van.
+            A 200-as status OK-t jelent.*/ 
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    //Magyarán, ha megjött a válasz és minden kész.
+                    //todo: státusz megjelenítés
+                    document.getElementById("display").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "index.php?rowcount="+rowcount+"&colcount="+colcount, true);//Megcsinálja a küldendő requestet
+            xmlhttp.send();//elküldi a requestet
+            document.getElementById("display").innerHTML = "Betöltés...";
+    }
+</script>
+</html>
