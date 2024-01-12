@@ -2,8 +2,8 @@
 -- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Gép: localhost:3306
--- Létrehozás ideje: 2024. Jan 11. 20:36
+-- Gép: localhost
+-- Létrehozás ideje: 2024. Jan 12. 02:08
 -- Kiszolgáló verziója: 8.0.17
 -- PHP verzió: 7.3.10
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `penztarca`
 --
+CREATE DATABASE IF NOT EXISTS `penztarca` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
+USE `penztarca`;
 
 -- --------------------------------------------------------
 
@@ -29,18 +31,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `felhasznalo` (
-  `uname` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `upw` varchar(255) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `uid` varchar(10) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `balance` int(11) DEFAULT NULL
+  `uname` varchar(100) CHARACTER SET utf8 COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `upw` varchar(255) CHARACTER SET utf8 COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `uid` varchar(10) CHARACTER SET utf8 COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `balance` int(11) DEFAULT NULL,
+  `Elsobelepes` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `felhasznalo`
---
-
-INSERT INTO `felhasznalo` (`uname`, `upw`, `uid`, `balance`) VALUES
-('adam', '12345', 'IAlk4L2TMt', 0);
 
 -- --------------------------------------------------------
 
@@ -49,19 +45,12 @@ INSERT INTO `felhasznalo` (`uname`, `upw`, `uid`, `balance`) VALUES
 --
 
 CREATE TABLE `log` (
-  `TimeStamp` date DEFAULT NULL,
-  `Text` text COLLATE utf8_hungarian_ci,
-  `uid` varchar(255) COLLATE utf8_hungarian_ci DEFAULT NULL,
-  `Balance` int(11) DEFAULT NULL
+  `TimeStamp` timestamp NULL DEFAULT NULL,
+  `Text` text CHARACTER SET utf8 COLLATE utf8_hungarian_ci,
+  `uid` varchar(255) CHARACTER SET utf8 COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `Balance` int(11) DEFAULT NULL,
+  `BalanceChange` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `log`
---
-
-INSERT INTO `log` (`TimeStamp`, `Text`, `uid`, `Balance`) VALUES
-('2024-01-10', 'Sikeres bejelentkezés', 'IAlk4L2TMt', 0),
-('2024-01-10', 'Sikeres bejelentkezés', 'IAlk4L2TMt', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -4,26 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A te pénztárcád!</title>
+    <style>
+        #FirstLogin{
+            display: none;
+        }
+        #NotFirstLogin{
+            display: none;
+        }
+        #BalanceText, #BalanceValue, #BalanceCurrency{
+            font-size: 20px;
+        }
+        #IncomeToggle, #ExpenditureToggle{
+            margin: 10px 0px;
+        }
+        #AllChanges, td, th{
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+            padding: 2px 5px;
+        }
+        #AllChanges{
+            margin-top: 10px;
+        }
+        tr:nth-child(even){
+            background-color: lightgray;
+        }
+        #Debug{
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    
+    <div id="Debug">
+        Request: '<span id="request"></span>'
+        <br>
+        Param: '<span id="param"></span>'
+    </div>
+    <div id="FirstLogin">
+        <h1>Adj meg egy nyitóösszeget az online pénztárcádnak!</h1>
+        <span>(Elfogadott érték: 0 - 1000000)</span>
+        <br>
+        <input type="number" id="openingvalue" value="0">
+        <button onclick="SendRequest('OpeningBalance',document.getElementById('openingvalue').value)">Megerősítés</button>
+    </div>
+    <div id="NotFirstLogin">
+        <h1>Online pénztárca</h1>
+        <button onclick="SendRequest('Logout', 'null')">Kijelentkezés</button>
+        <br><br>
+        <span id="BalanceText">Felhasználható egyenleg: </span><span id="BalanceValue"></span><span id="BalanceCurrency"> Ft</span>
+        <br>
+        <button id="IncomeToggle" onclick="ToggleMenu(true)">Bevétel hozzáadása</button>
+        <div id="IncomeMenu" style="display: none;">
+            <span>Összeg</span>
+            <br>
+            <input type="number" id="IncomeAmount" value="1"> Ft
+            <br><br>
+            <button id="AddIncome" onclick="SendRequest('AddIncome', document.getElementById('IncomeAmount').value)">Művelet végrehajtása</button>
+        </div>
+        <br>
+        <button id="ExpenditureToggle" onclick="ToggleMenu(false)">Kiadás hozzáadása</button>
+        <div id="ExpenditureMenu" style="display: none;">
+            <span>Összeg</span>
+            <br>
+            <input type="number" id="ExpenditureAmount" value="1"> Ft
+            <br><br>
+            <button id="AddExpenditure" onclick="SendRequest('AddExpenditure', document.getElementById('ExpenditureAmount').value)">Művelet végrehajtása</button>
+        </div>
+        <table id="AllChanges"></table>
+    </div>
 </body>
 <script>
-    function createtable() {
-        var xmlhttp = new XMLHttpRequest();//Új request
-            /*Ez az event akkor fut le ha, a 'readyState' tulajdonság megváltozik.(Ha van/nincs kész válasz.)
-            A 4-es state azt jelenti hogy a call elment és a válasz kész van.
-            A 200-as status OK-t jelent.*/ 
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
+    var xmlhttp = new XMLHttpRequest();//Új request
+
+    window.onload = function()//Melyik UI nyíljon meg
+    {
+        var FirstRequest = new XMLHttpRequest();
+
+        FirstRequest.onreadystatechange = function()
+        {
+                if (this.readyState == 4/*A call elment és a válasz kész van.*/ && this.status == 200/*OK*/) {
                     //Magyarán, ha megjött a válasz és minden kész.
-                    //todo: státusz megjelenítés
-                    document.getElementById("display").innerHTML = this.responseText;
+                    if(this.responseText == "FirstLogin;null")
+                    {
+                        document.getElementById("FirstLogin").style.display = "block";//Nyitóegyenleg bekérése
+                    }
+                    else
+                    {
+                        document.getElementById("NotFirstLogin").style.display = "block";//Pénztárca
+                        document.getElementById("BalanceValue").innerText = this.responseText.split(";")[1];//Pénztárca egyenleg megjelenítése
+                        SendRequest("GetChanges", "null");
+                    }
                 }
-            };
-            xmlhttp.open("GET", "index.php?rowcount="+rowcount+"&colcount="+colcount, true);//Megcsinálja a küldendő requestet
-            xmlhttp.send();//elküldi a requestet
-            document.getElementById("display").innerHTML = "Betöltés...";
+        };
+        
+        FirstRequest.open("POST", "wallet.php?r=FirstLoad", true);//Első belépés request
+        FirstRequest.send();//Küldés
+    };
+
+    function ToggleMenu(IsIncomeMenu)//Bevétel/Kiadás menü visibility toggle
+    {
+        if(IsIncomeMenu)//Income menü
+        {
+            IncomeMenu = document.getElementById("IncomeMenu");
+            IncomeToggle = document.getElementById("IncomeToggle");
+
+            if (IncomeMenu.style.display == "none")//Ha nem látszik a menü
+            {
+                IncomeToggle.innerHTML = "Bevétel menü elrejtése";//Gomb szöveg változzon
+                IncomeMenu.style.display = "block";//Látszódjon a menü
+            }
+            else//Ha látszik a menü
+            {
+                IncomeToggle.innerHTML = "Bevétel hozzáadása";//Gomb szöveg változzon
+                IncomeMenu.style.display = "none";//NE látszódjon a menü
+            }
+        }
+        else//Expenditure menü
+        {
+            ExpenditureMenu = document.getElementById("ExpenditureMenu");
+            ExpenditureToggle = document.getElementById("ExpenditureToggle");
+
+            if (ExpenditureMenu.style.display == "none")//Ha nem látszik a menü
+            {
+                ExpenditureToggle.innerHTML = "Kiadás menü elrejtése";//Gomb szöveg változzon
+                ExpenditureMenu.style.display = "block";//Látszódjon a menü
+            }
+            else//Ha látszik a menü
+            {
+                ExpenditureToggle.innerHTML = "Kiadás hozzáadása";//Gomb szöveg változzon
+                ExpenditureMenu.style.display = "none";//NE látszódjon a menü
+            }
+        }
+    }
+    //Adatfogadás
+
+    //Az alábbi event(onreadystatechange) akkor fut le ha, a 'readyState' tulajdonság megváltozik. (Ha van / feldolgozás alatt van / nincs válasz.) 
+    xmlhttp.onreadystatechange = function()
+    {
+        if (this.readyState == 4/*A call elment és a válasz kész van.*/ && this.status == 200/*OK*/)
+        {
+            //Magyarán, ha megjött a válasz és minden kész.
+            var response = this.responseText.split(";");
+            document.getElementById("request").innerHTML = response[0];//A válasz feldolgozása
+            document.getElementById("param").innerHTML = response[1];
+
+            switch(response[0])//A request alapján eldöntött adatfeldolgozás
+            {
+                case "Reload":
+                    parent.location.href = parent.location.href;//Újratöltés
+                break;
+                case "Balance":
+                    document.getElementById("BalanceValue").innerText = response[1];
+                    SendRequest("GetChanges", "null");//Kérd le a táblázatot, pénzmozgás történt
+                break;
+                case "ChangesTable":
+                    document.getElementById("AllChanges").innerHTML = response[1];
+                case "Logout":
+                    parent.location.href = response[1];
+                break;
+            }
+        }
+    };
+
+    function SendRequest(request, param)//Adatküldés
+    {
+        xmlhttp.open("POST", "wallet.php?r="+request+"&p="+param/*A fájl amit megszólít és paraméterek hozzá.*/, true);//Megcsinálja a küldendő requestet
+
+        xmlhttp.send();//Elküldi a requestet
+
+        document.getElementById("request").innerHTML = "Válaszra várás...";//Amíg nincs válasz, legyen ez a szöveg.
     }
 </script>
 </html>

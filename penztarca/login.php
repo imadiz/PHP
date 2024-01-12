@@ -10,7 +10,7 @@
         session_start();
 
         $_SESSION['id'] = $logindata['uid'];
-        WriteLog("Sikeres bejelentkezés", $_SESSION['id'], $logindata['balance']);
+        WriteLog("Bejelentkezés", $logindata['balance']);
         print("<script>parent.location.href = './?p=yourwallet';</script>");
     }
     else
