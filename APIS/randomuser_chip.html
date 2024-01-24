@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #Request{
+            margin-top: 30px;
+        }
+        #userchip input{
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        var UserDataRequest = new XMLHttpRequest();
+
+        UserDataRequest.onreadystatechange = function()
+        {
+            if (this.readyState == 4/*A call elment és a válasz kész van.*/ && this.status == 200/*OK*/) {
+                //Magyarán, ha megjött a válasz és minden kész.
+
+                let formnevek = ["name", "gender", "bday", "location", "email", "cell", "user", "pwd"];
+
+                let response = this.responseText.split(";");
+
+                for(let i = 0; i < formnevek.length; i++)
+                {
+                    document.getElementById(formnevek[i]).value = response[i];
+                }
+                document.getElementById("pic").src = response[response.length - 1];
+                document.getElementById("status").innerText = "";
+            }
+        };
+
+        function SendRequest(){
+            UserDataRequest.open("POST", "randomuser.php", true);//APICall összekészítés
+            UserDataRequest.send();//Küldés
+            document.getElementById("status").innerText = "Adatok betöltése...";
+        }
+    </script>
+</head>
+<body>
+    <span id="status"></span>
+    <div id="userchip">
+        <span>Név</span><br>
+        <input type="text" id="name"><br>
+        <span>Nem</span><br>
+        <input type="text" id="gender"><br>
+        <span>Születési dátum</span><br>
+        <input type="text" id="bday"><br>
+        <span>Lakhely</span><br>
+        <input type="text" id="location"><br>
+        <span>E-mail cím</span><br>
+        <input type="text" id="email"><br>
+        <span>Telefonszám</span><br>
+        <input type="text" id="cell"><br>
+        <span>Felhasználónév</span><br>
+        <input type="text" id="user"><br>
+        <span>Jelszó</span><br>
+        <input type="text" id="pwd"><br>
+        <span>Profilkép</span><br>
+        <img id="pic" src="" alt="prof_kep">
+        <button onclick="SendRequest()" id="Request">Feltöltés adatokkal</button>
+    </div>
+</body>
+</html>
